@@ -45,7 +45,7 @@ function validateForm(event: Event){
         }
     }
     var ele = document.createElement("iframe");
-    ele.setAttribute("src", "https://www.youtube.com/embed/" + result + "?rel=0&playsinline=1");
+    ele.setAttribute("src", "https://www.youtube.com/embed/" + result + "?rel=0");
     var movies = document.getElementById("movies");
     if (movies == undefined) {
         cancelEvent(event);
