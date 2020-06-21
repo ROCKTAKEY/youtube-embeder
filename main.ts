@@ -36,15 +36,23 @@ var urls: string[] = [];
 function validateForm(){
     var result = "";
     var texts = document.getElementById("url")?.getElementsByTagName("input");
-    if (texts == null || texts == undefined) {
+    var text: string;
+    if(!texts)
+        navigator.clipboard.readText().then(clipText => text = clipText);
+
+    if (!text && (texts == null || texts == undefined)) {
         return;
     }
-    for (var i = 0; i < texts.length; i++) {
-        if (texts[i].type != "submit") {
-            result = texts[i].value.substring(17);
-            break;
+
+    if(text) result = text;
+    else
+        for (var i = 0; i < texts.length; i++) {
+            if (texts[i].type != "submit") {
+                result = texts[i].value.substring(17);
+                break;
+            }
         }
-    }
+
     var ele = document.createElement("iframe");
     var url = "https://www.youtube.com/embed/" + result + "?rel=0&playsinline=1";
     urls.push(url);
@@ -58,6 +66,13 @@ function validateForm(){
     if(storageAvailable("localStorage")){
         localStorage.setItem("movies", JSON.stringify(urls));
     }
+
+    var ele2 = document.createElement("a");
+    ele2.setAttribute("href", url);
+    ele2.innerText = url;
+    movies.insertBefore(ele2, movies.firstChild);
+
+    navigator.clipboard.writeText(url);
 }
 
 function setupEvents(_event: Event){
@@ -71,6 +86,10 @@ function setupEvents(_event: Event){
                 var ele = document.createElement("iframe");
                 ele.setAttribute("src", url);
                 movies?.insertBefore(ele, movies.firstChild);
+                var ele2 = document.createElement("a");
+                ele2.setAttribute("href", url);
+                ele2.innerText = url;
+                movies.insertBefore(ele2, movies.firstChild);
             }
         }
     }
