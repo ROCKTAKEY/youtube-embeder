@@ -45,7 +45,7 @@ function validateForm(event) {
     }
     var ele = document.createElement("iframe");
     ele.setAttribute("src", "https://www.youtube.com/embed/" + result +
-        "?rel=0&origin=http://rocktakey.github.io/youtube-embeder/");
+        "?rel=0&origin=https://www.examples.com");
     var movies = document.getElementById("movies");
     if (movies == undefined) {
         cancelEvent(event);
