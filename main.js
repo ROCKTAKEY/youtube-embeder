@@ -44,7 +44,7 @@ function validateForm() {
         }
     }
     var ele = document.createElement("iframe");
-    var url = "https://www.youtube.com/embed/" + result + "?rel=0";
+    var url = "https://www.youtube.com/embed/" + result + "?rel=0&playsinline=1";
     urls.push(url);
     ele.setAttribute("src", url);
     var movies = document.getElementById("movies");
