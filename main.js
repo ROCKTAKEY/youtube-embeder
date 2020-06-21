@@ -29,6 +29,7 @@ function cancelEvent(event) {
     event.preventDefault();
     event.stopPropagation();
 }
+var urls = [];
 function validateForm() {
     var _a;
     var result = "";
@@ -43,14 +44,16 @@ function validateForm() {
         }
     }
     var ele = document.createElement("iframe");
-    ele.setAttribute("src", "https://www.youtube.com/embed/" + result + "?rel=0");
+    var url = "https://www.youtube.com/embed/" + result + "?rel=0";
+    urls.push(url);
+    ele.setAttribute("src", url);
     var movies = document.getElementById("movies");
     if (movies == undefined) {
         return;
     }
     movies.insertBefore(ele, movies.firstChild);
     if (storageAvailable("localStorage")) {
-        localStorage.setItem("movies", JSON.stringify(movies));
+        localStorage.setItem("movies", JSON.stringify(urls));
     }
 }
 function setupEvents(_event) {
@@ -59,9 +62,12 @@ function setupEvents(_event) {
         var newMovies = JSON.parse(localStorage.getItem("movies") || "null");
         ;
         var movies = document.getElementById("movies");
-        if (newMovies) {
-            for (var i = 0; i < newMovies.getElementsByTagName("iframe").length; i++) {
-                movies === null || movies === void 0 ? void 0 : movies.appendChild(newMovies.getElementsByTagName("iframe")[i]);
+        if (newMovies != null) {
+            for (var i = 0; i < newMovies.length; i++) {
+                var url = newMovies[i];
+                var ele = document.createElement("iframe");
+                ele.setAttribute("src", url);
+                movies === null || movies === void 0 ? void 0 : movies.insertBefore(ele, movies.firstChild);
             }
         }
     }
