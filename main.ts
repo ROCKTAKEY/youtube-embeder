@@ -31,11 +31,10 @@ function cancelEvent(event: Event){
         event.stopPropagation();
 }
 
-function validateForm(event: Event){
+function validateForm(){
     var result = "";
     var texts = document.getElementById("url")?.getElementsByTagName("input");
     if (texts == null || texts == undefined) {
-        cancelEvent(event);
         return;
     }
     for (var i = 0; i < texts.length; i++) {
@@ -48,14 +47,12 @@ function validateForm(event: Event){
     ele.setAttribute("src", "https://www.youtube.com/embed/" + result + "?rel=0");
     var movies = document.getElementById("movies");
     if (movies == undefined) {
-        cancelEvent(event);
         return;
     }
     movies.insertBefore(ele, movies.firstChild);
     if(storageAvailable("localStorage")){
         localStorage.setItem("movies", JSON.stringify(movies));
     }
-    cancelEvent(event);
 }
 
 function setupEvents(_event: Event){
@@ -71,7 +68,7 @@ function setupEvents(_event: Event){
         }
     }
 
-    document.getElementById("url")?.addEventListener("submit", validateForm);
+    document.getElementById("aaa")?.addEventListener("click",validateForm);
 }
 
 window.addEventListener("load", setupEvents);
