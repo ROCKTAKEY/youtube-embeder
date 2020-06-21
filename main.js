@@ -57,7 +57,7 @@ function validateForm() {
     }
 }
 function setupEvents(_event) {
-    var _a;
+    var _a, _b;
     if (storageAvailable("localStorage")) {
         var newMovies = JSON.parse(localStorage.getItem("movies") || "null");
         ;
@@ -72,5 +72,13 @@ function setupEvents(_event) {
         }
     }
     (_a = document.getElementById("aaa")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", validateForm);
+    (_b = document.getElementById("clear")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", clearStorage);
+}
+function clearStorage() {
+    urls = [];
+    if (storageAvailable("localStorage")) {
+        localStorage.clear();
+    }
+    document.getElementById("movies").innerHTML = "";
 }
 window.addEventListener("load", setupEvents);

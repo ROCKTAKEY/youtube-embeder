@@ -76,6 +76,15 @@ function setupEvents(_event: Event){
     }
 
     document.getElementById("aaa")?.addEventListener("click",validateForm);
+    document.getElementById("clear")?.addEventListener("click",clearStorage);
+}
+
+function clearStorage(){
+    urls = [];
+    if(storageAvailable("localStorage")){
+        localStorage.clear();
+    }
+    document.getElementById("movies").innerHTML="";
 }
 
 window.addEventListener("load", setupEvents);
