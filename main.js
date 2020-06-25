@@ -76,6 +76,7 @@ function setupEvents(_event) {
         if (newMovies != null) {
             for (var i = 0; i < newMovies.length; i++) {
                 var url = newMovies[i];
+                urls.push(url);
                 var ele = document.createElement("iframe");
                 ele.setAttribute("src", url);
                 movies === null || movies === void 0 ? void 0 : movies.insertBefore(ele, movies.firstChild);
