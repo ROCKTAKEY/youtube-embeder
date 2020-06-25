@@ -72,6 +72,7 @@ function validateForm(){
     ele2.innerText = url;
     movies.insertBefore(ele2, movies.firstChild);
 
+    document.getElementsByTagName("form")[0].reset();
     navigator.clipboard.writeText(url);
 }
 
