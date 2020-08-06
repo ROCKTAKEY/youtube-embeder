@@ -36,36 +36,38 @@ var urls: string[] = [];
 function validateForm(){
     var result = "";
     var texts = document.getElementById("url")?.getElementsByTagName("input");
-    var text: string;
+    var text: string | null;
+    text = null;
     if(!texts)
-        navigator.clipboard.readText().then(clipText => text = clipText);
+        navigator.clipboard.readText().then((clipText: string) => text = clipText);
 
-    if (!text && (texts == null || texts == undefined)) {
-        return;
-    }
+    if (!text && !texts) return;
 
     if(text) result = text;
     else
-        for (var i = 0; i < texts.length; i++) {
+        for (var i = 0; texts && i < texts.length; i++) {
             if (texts[i].type != "submit") {
                 result = texts[i].value.substring(17);
                 break;
             }
         }
 
-    var ele = document.createElement("iframe");
     var url = "https://www.youtube.com/embed/" + result + "?rel=0&playsinline=1";
     urls.push(url);
 
-    ele.setAttribute("src", url);
+    if(storageAvailable("localStorage")){
+        localStorage.setItem("movies", JSON.stringify(urls));
+    }
+
+    var ele = document.createElement("img");
+    var urlimg = "http://img.youtube.com/vi/" + result +"/hqdefault.jpg";
+
+    ele.setAttribute("src", urlimg);
     var movies = document.getElementById("movies");
     if (movies == undefined) {
         return;
     }
     movies.insertBefore(ele, movies.firstChild);
-    if(storageAvailable("localStorage")){
-        localStorage.setItem("movies", JSON.stringify(urls));
-    }
 
     var ele2 = document.createElement("a");
     ele2.setAttribute("href", url);
@@ -85,18 +87,20 @@ function setupEvents(_event: Event){
             for (var i = 0; i < newMovies.length; i++) {
                 var url=newMovies[i];
                 urls.push(url);
-                var ele = document.createElement("iframe");
-                ele.setAttribute("src", url);
+                var urlimg = "http://img.youtube.com/vi/" + url.substring(30, url.length - 20)
+                    +"/hqdefault.jpg";
+                var ele = document.createElement("img");
+                ele.setAttribute("src", urlimg);
                 movies?.insertBefore(ele, movies.firstChild);
                 var ele2 = document.createElement("a");
                 ele2.setAttribute("href", url);
                 ele2.innerText = url;
-                movies.insertBefore(ele2, movies.firstChild);
+                movies?.insertBefore(ele2, movies?.firstChild);
             }
         }
     }
 
-    document.getElementById("aaa")?.addEventListener("click",validateForm);
+    document?.getElementById("aaa")?.addEventListener("click",validateForm);
     document.getElementById("clear")?.addEventListener("click",clearStorage);
 }
 
@@ -105,7 +109,9 @@ function clearStorage(){
     if(storageAvailable("localStorage")){
         localStorage.clear();
     }
+
     document.getElementById("movies").innerHTML="";
 }
+
 
 window.addEventListener("load", setupEvents);
