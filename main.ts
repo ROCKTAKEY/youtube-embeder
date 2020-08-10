@@ -114,7 +114,7 @@ function embedHandler() {
 
     urls.push(token);
     writeURLsToStorage();
-    (<HTMLInputElement> document.getElementById("url2")).value = "";
+    (<HTMLFormElement> document.getElementById("url")).reset();
 }
 
 function setupEvents(){

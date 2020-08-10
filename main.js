@@ -92,7 +92,7 @@ function embedHandler() {
     addToMovies(token, movies);
     urls.push(token);
     writeURLsToStorage();
-    document.getElementById("url2").value = "";
+    document.getElementById("url").reset();
 }
 function setupEvents() {
     var _a, _b;
