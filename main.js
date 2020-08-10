@@ -30,90 +30,68 @@ function cancelEvent(event) {
     event.stopPropagation();
 }
 var urls = [];
-function addToMovies(token, movies) {
-    var embedURL = makeEmbedURL(token);
-    var imgURL = makeImgURL(token);
-    var one = makeOneElement(embedURL, imgURL, token);
-    movies.insertBefore(one, movies.firstChild);
-}
-function getFromClipboard() {
-    var _a, _b;
-    var text = null;
-    (_b = (_a = navigator.clipboard).readText) === null || _b === void 0 ? void 0 : _b.call(_a).then(function (clipText) { return text = clipText; });
-    return text || null;
-}
-function writeURLsToStorage() {
-    if (storageAvailable("localStorage"))
-        localStorage.setItem("movies", JSON.stringify(urls));
-}
-function readURLsFromStorage() {
-    return JSON.parse(localStorage.getItem("movies") || "null");
-}
-function validp(url) {
-    return url.match(/^https:\/\/youtu.be\//);
-}
-function makeEmbedURL(token) {
-    return "https://www.youtube.com/embed/" + token + "?rel=0&playsinline=1";
-}
-function makeImgURL(token) {
-    return "http://img.youtube.com/vi/" + token + "/hqdefault.jpg";
-}
-function oneDeleter(token) {
-    if (window.confirm("Really delete?")) {
-        urls = urls.filter(function (str) { return str != token; });
-        writeURLsToStorage();
-        location.reload();
-    }
-}
-function makeOneElement(embedURL, imgURL, token) {
-    var one = document.createElement("div");
-    one.setAttribute("class", "one");
-    var link = document.createElement("a");
-    link.setAttribute("href", embedURL);
-    var img = document.createElement("img");
-    img.setAttribute("src", imgURL);
-    link.insertBefore(img, link.firstChild);
-    one.insertBefore(link, img.firstChild);
-    var deleteButton = document.createElement("button");
-    deleteButton.setAttribute("class", "deleteButton");
-    deleteButton.innerText = "Delete";
-    deleteButton.addEventListener("click", function () { oneDeleter(token); });
-    one.insertBefore(deleteButton, one.firstChild);
-    return one;
-}
-function embedHandler() {
-    var movies = document.getElementById("movies");
-    var input = getFromClipboard();
-    if (!input || !validp(input))
-        input = document.getElementById("url2").value;
-    else if (!input || !validp(input))
+function validateForm() {
+    var _a;
+    var result = "";
+    var texts = (_a = document.getElementById("url")) === null || _a === void 0 ? void 0 : _a.getElementsByTagName("input");
+    var text;
+    text = null;
+    if (!texts)
+        navigator.clipboard.readText().then(function (clipText) { return text = clipText; });
+    if (!text && !texts)
         return;
-    var token = input.substring(17);
-    addToMovies(token, movies);
-    urls.push(token);
-    writeURLsToStorage();
-}
-function setupEvents() {
-    var _a, _b;
-    var storages = readURLsFromStorage();
-    if (storages) {
-        var movies = document.getElementById("movies");
-        if (!movies)
-            return;
-        var flag = false;
-        for (var i = 0; i < storages.length; i++) {
-            var str = storages[i];
-            if (str.match(/^https:\/\/www.youtube.com\/embed\//)) {
-                str = str.substring(30, str.length - 20);
-                flag = true;
+    if (text)
+        result = text;
+    else
+        for (var i = 0; texts && i < texts.length; i++) {
+            if (texts[i].type != "submit") {
+                result = texts[i].value.substring(17);
+                break;
             }
-            urls.push(str);
-            addToMovies(str, movies);
         }
-        if (flag)
-            writeURLsToStorage();
+    var url = "https://www.youtube.com/embed/" + result + "?rel=0&playsinline=1";
+    urls.push(url);
+    if (storageAvailable("localStorage")) {
+        localStorage.setItem("movies", JSON.stringify(urls));
     }
-    (_a = document === null || document === void 0 ? void 0 : document.getElementById("aaa")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", embedHandler);
+    var ele = document.createElement("img");
+    var urlimg = "http://img.youtube.com/vi/" + result + "/hqdefault.jpg";
+    ele.setAttribute("src", urlimg);
+    var movies = document.getElementById("movies");
+    if (movies == undefined) {
+        return;
+    }
+    movies.insertBefore(ele, movies.firstChild);
+    var ele2 = document.createElement("a");
+    ele2.setAttribute("href", url);
+    ele2.innerText = url;
+    movies.insertBefore(ele2, movies.firstChild);
+    document.getElementById("url").reset();
+    navigator.clipboard.writeText(url);
+}
+function setupEvents(_event) {
+    var _a, _b;
+    if (storageAvailable("localStorage")) {
+        var newMovies = JSON.parse(localStorage.getItem("movies") || "null");
+        ;
+        var movies = document.getElementById("movies");
+        if (newMovies != null) {
+            for (var i = 0; i < newMovies.length; i++) {
+                var url = newMovies[i];
+                urls.push(url);
+                var urlimg = "http://img.youtube.com/vi/" + url.substring(30, url.length - 20)
+                    + "/hqdefault.jpg";
+                var ele = document.createElement("img");
+                ele.setAttribute("src", urlimg);
+                movies === null || movies === void 0 ? void 0 : movies.insertBefore(ele, movies.firstChild);
+                var ele2 = document.createElement("a");
+                ele2.setAttribute("href", url);
+                ele2.innerText = url;
+                movies === null || movies === void 0 ? void 0 : movies.insertBefore(ele2, movies === null || movies === void 0 ? void 0 : movies.firstChild);
+            }
+        }
+    }
+    (_a = document === null || document === void 0 ? void 0 : document.getElementById("aaa")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", validateForm);
     (_b = document.getElementById("clear")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", clearStorage);
 }
 function clearStorage() {
