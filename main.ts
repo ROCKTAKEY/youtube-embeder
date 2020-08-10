@@ -104,10 +104,9 @@ function makeOneElement(embedURL: string, imgURL: string, token: string) {
 
 function embedHandler() {
     let movies = document.getElementById("movies");
-    let input: string | null = getFromClipboard();
+    let input: string | null = (<HTMLInputElement> document.getElementById("url2")).value;
 
-    if (!input || !validp(input))
-        input = (<HTMLInputElement> document.getElementById("url2")).value;
+    if (!input || !validp(input)) input = getFromClipboard();
     else if (!input || !validp(input)) return;
 
     let token = input.substring(17);
@@ -115,6 +114,7 @@ function embedHandler() {
 
     urls.push(token);
     writeURLsToStorage();
+    (<HTMLInputElement> document.getElementById("url2")).value = "";
 }
 
 function setupEvents(){

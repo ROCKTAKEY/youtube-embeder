@@ -83,15 +83,16 @@ function makeOneElement(embedURL, imgURL, token) {
 }
 function embedHandler() {
     var movies = document.getElementById("movies");
-    var input = getFromClipboard();
+    var input = document.getElementById("url2").value;
     if (!input || !validp(input))
-        input = document.getElementById("url2").value;
+        input = getFromClipboard();
     else if (!input || !validp(input))
         return;
     var token = input.substring(17);
     addToMovies(token, movies);
     urls.push(token);
     writeURLsToStorage();
+    document.getElementById("url2").value = "";
 }
 function setupEvents() {
     var _a, _b;
