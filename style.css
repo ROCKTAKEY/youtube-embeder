@@ -1,0 +1,64 @@
+body {
+    background-color: #272727;
+    text-align: center;
+}
+
+#movies div.one {
+    padding: 10px 10px 10px 10px;
+    display: inline-block;
+}
+
+#movies div.one a img {
+    max-width: 100%;
+}
+
+#movies div.one button.deleteButton, button#clear {
+    display: block;
+    border-style: none;
+    box-shadow: 2px 1px 1px 1px #fff;
+    background-color: #ff0000;
+    font-weight: bold;
+    font-size: 15px;
+    color: #fff;
+    padding: 3px 14px 3px 14px;
+}
+
+#movies div.one button.deleteButton:hover, button#clear:hover {
+    background-color: #aa0000;
+}
+
+button#clear {
+    font-size: 20px;
+    padding: 5px 15px 5px 15px;
+    margin: 50px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+input {
+    text-align: center;
+    font-size: 30px;
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+button#aaa {
+    display: block;
+    border-style: none;
+    box-shadow: 2px 1px 1px 1px #fff;
+    background-color: #3333ff;
+    font-weight: bold;
+    font-size: 30px;
+    color: #fff;
+    padding: 5px 15px 5px 15px;
+    margin-left: auto;
+    margin-right: auto;
+}
+button#aaa:hover {
+    background-color: #5555ff;
+}
+
+/* #movies div.one a { */
+/*     max-width: 100%; */
+/* } */
