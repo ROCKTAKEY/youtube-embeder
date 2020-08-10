@@ -118,10 +118,12 @@ function setupEvents() {
     (_b = document.getElementById("clear")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", clearStorage);
 }
 function clearStorage() {
-    urls = [];
-    if (storageAvailable("localStorage")) {
-        localStorage.clear();
+    if (window.confirm("Really clear all?")) {
+        urls = [];
+        if (storageAvailable("localStorage")) {
+            localStorage.clear();
+        }
+        document.getElementById("movies").innerHTML = "";
     }
-    document.getElementById("movies").innerHTML = "";
 }
 window.addEventListener("load", setupEvents);

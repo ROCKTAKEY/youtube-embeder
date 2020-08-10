@@ -142,12 +142,14 @@ function setupEvents(){
 }
 
 function clearStorage(){
-    urls = [];
-    if(storageAvailable("localStorage")){
-        localStorage.clear();
-    }
+    if(window.confirm("Really clear all?")) {
+        urls = [];
+        if(storageAvailable("localStorage")){
+            localStorage.clear();
+        }
 
-    document.getElementById("movies").innerHTML="";
+        document.getElementById("movies").innerHTML="";
+    }
 }
 
 
